@@ -11,7 +11,6 @@
 #include <sys/ioctl.h>
 #include <string.h>
 
-#pragma ide diagnostic ignored "EndlessLoop"
 #define ServerFIFO "file.fifo"
 
 #define PAGE_SIZE 4096
