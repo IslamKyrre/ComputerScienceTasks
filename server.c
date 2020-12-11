@@ -11,8 +11,6 @@
 #include <sys/ioctl.h>
 #include <string.h>
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "EndlessLoop"
 #define ServerFIFO "file.fifo"
 
 #define PAGE_SIZE 4096
@@ -104,4 +102,3 @@ int main() {
     }
 }
 
-#pragma clang diagnostic pop
