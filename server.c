@@ -11,6 +11,7 @@
 #include <sys/ioctl.h>
 #include <string.h>
 
+#pragma ide diagnostic ignored "EndlessLoop"
 #define ServerFIFO "file.fifo"
 
 #define PAGE_SIZE 4096
@@ -39,6 +40,17 @@ int OpenFD(const char *name, int flags) {
 }
 
 
+void my_handler(int sig){
+    printf("CTRL-C pressed\n");
+    if (unlink(ServerFIFO) < 0){
+        printf("Couldn't delete FIFO");
+        exit(-1);
+    }
+    exit(0);
+
+}
+
+
 int main() {
     int serverFd, clientFd;
 
@@ -51,10 +63,14 @@ int main() {
 
     serverFd = OpenFD(ServerFIFO, O_RDWR);
 
+    signal(SIGINT, my_handler);
+
     while (1) {
 
         char ClientFIFO[64];
         struct Request CurrentRequest;
+
+        signal(SIGINT, my_handler);
 
         if (read(serverFd, &CurrentRequest, sizeof(struct Request)) < 0) {
             perror("Unfortunately, some of the requests are incorrect");
@@ -80,6 +96,7 @@ int main() {
         int RD;
 
         while (1) {
+
 
             if((RD = read(ClientFile, buf, PAGE_SIZE)) < 0) {
                 perror("Unfortunately, we couln't read the file.");
