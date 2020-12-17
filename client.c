@@ -91,4 +91,9 @@ int main(int argc, char *argv[]) {
     CloseFD(clientFd);
     CloseFD(serverFd);
 
+    if (unlink(ClientFIFO) < 0){
+        printf("Couldn't delete FIFO");
+        exit(-1);
+    }
+
 }
